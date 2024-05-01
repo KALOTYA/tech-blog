@@ -19,7 +19,11 @@ router.get('/', async (req, res) => {
     });
 
     // Serialize data so the template can read it
-    const blogPosts = blogPostData.map((blogPost) => blogPost.get({ plain: true }));
+    const blogPosts = blogPostData.map((blogPost) => {
+      const serializedBlogPost = blogPost.toJSON();
+      serializedBlogPost.comments = serializedBlogPost.comments || [];
+      return serializedBlogPost;
+    });
 
     // Pass serialized data and session flag into template
     res.render('homepage', { 
@@ -27,7 +31,8 @@ router.get('/', async (req, res) => {
       logged_in: req.session.logged_in 
     });
   } catch (err) {
-    res.status(500).json(err);
+    console.error('Error fetching blog posts:', err);
+    res.status(500).json({ error: 'Error fetching blog posts' });
   }
 });
 

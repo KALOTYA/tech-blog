@@ -1,14 +1,28 @@
 [
   {
     "title": "First Blog Post",
-    "content": "This is the content of the first blog post."
+    "content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+    "user_id": 1,
+    "comments": [
+      {
+        "content": "Great post!",
+        "user_id": 2
+      },
+      {
+        "content": "I learned a lot from this.",
+        "user_id": 3
+      }
+    ]
   },
   {
     "title": "Second Blog Post",
-    "content": "This is the content of the second blog post."
-  },
-  {
-    "title": "Third Blog Post",
-    "content": "This is the content of the third blog post."
+    "content": "Nulla facilisi. Etiam et odio sed quam cursus varius.",
+    "user_id": 2,
+    "comments": [
+      {
+        "content": "Interesting topic!",
+        "user_id": 1
+      }
+    ]
   }
 ]
