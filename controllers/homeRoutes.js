@@ -11,6 +11,10 @@ router.get('/', async (req, res) => {
           model: User,
           attributes: ['name'],
         },
+        {
+          model: Comment,
+          include: [{ model: User, attributes: ['name'] }],
+        },
       ],
     });
 
@@ -35,6 +39,10 @@ router.get('/blog/:id', async (req, res) => {
           model: User,
           attributes: ['name'],
         },
+        {
+          model: Comment,
+          include: [{ model: User, attributes: ['name'] }],
+        },
       ],
     });
 
@@ -46,6 +54,20 @@ router.get('/blog/:id', async (req, res) => {
     });
   } catch (err) {
     res.status(500).json(err);
+  }
+});
+
+router.post('/blog/:id/comments', withAuth, async (req, res) => {
+  try {
+    const newComment = await Comment.create({
+      ...req.body,
+      user_id: req.session.user_id,
+      blogPostId: req.params.id,
+    });
+
+    res.status(201).json(newComment);
+  } catch (err) {
+    res.status(400).json(err);
   }
 });
 
