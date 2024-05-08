@@ -36,15 +36,21 @@ router.delete('/:id', withAuth, async (req, res) => {
 });
 
 router.post('/:id/comments', withAuth, async (req, res) => {
+  console.log("Post route hit:", req.params.id, req.body);
   try {
+    const postId = req.params.id; 
+    const { content } = req.body; 
+
     const newComment = await Comment.create({
-      ...req.body,
-      user_id: req.session.user_id,
-      blogPostId: req.params.id,
+      content,
+      userId: req.session.user_id,
+      blogPostId: postId,
     });
+    console.log("new comment:", newComment);
 
     res.status(201).json(newComment);
   } catch (err) {
+    console.error("Error creating comment:", err);
     res.status(400).json(err);
   }
 });

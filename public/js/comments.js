@@ -2,10 +2,10 @@ const newCommentHandler = async (event) => {
     event.preventDefault();
 
     const content = document.querySelector('#comment-content').value.trim();
-
+    const blogId = window.location.pathname.split("/")[2];
     if (content) {
         try {
-            const response = await fetch(`/api/comments`, {
+            const response = await fetch(`/api/blogPosts/${blogId}/comments`, {
                 method: 'POST',
                 body: JSON.stringify({ content }),
                 headers: {
