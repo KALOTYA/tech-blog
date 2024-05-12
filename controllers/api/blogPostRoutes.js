@@ -1,4 +1,5 @@
 const router = require('express').Router();
+const { where } = require('sequelize');
 const { BlogPost, Comment } = require('../../models');
 const withAuth = require('../../utils/auth');
 
@@ -14,6 +15,34 @@ router.post('/', withAuth, async (req, res) => {
     res.status(400).json(err);
   }
 });
+
+router.put('/:id', withAuth, async (req, res) => {
+  try {
+    await BlogPost.update(
+      {
+        title: req.body.title,
+        content: req.body.content,
+      },
+      {
+        where: {
+          id: req.params.id,
+          user_id: req.session.user_id,
+        },
+      }
+    );
+
+    const updatedBlogPost = await BlogPost.findOne({
+      where: {
+        id: req.params.id,
+      },
+    });
+
+    res.status(200).json(updatedBlogPost);
+  } catch (err) {
+    res.status(500).json({ message: 'Failed to update blog post' });
+  }
+});
+
 
 router.delete('/:id', withAuth, async (req, res) => {
   try {
